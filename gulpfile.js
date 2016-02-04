@@ -15,7 +15,8 @@ gulp.task('bundles', function() {
 			'bundles/md2.jbbsrc'
 		])
 		.pipe(jbb({
-			'profile': 'three'
+			profile: 'three',
+			sparse: true
 		}))
 		.pipe(gulp.dest('build/bundles'));
 

@@ -39,9 +39,19 @@ function run_test( bundle ) {
 		});
 	}
 
+	// Run timing tests for binary
+	var load_sparse_binary = function( cb ){
+		console.time("binary["+bundle+"]");
+		binaryLoader.add( 'build/bundles/'+bundle+'.jbbp', function() {
+			binaryLoader.load(function() {
+				console.timeEnd("binary["+bundle+"]");
+				cb();
+			});
+		});
+	}
 
 	// Run binary first
-	load_binary(function() {
+	load_sparse_binary(function() {
 		// Wait a sec
 		setTimeout(function() {
 			// Load source
