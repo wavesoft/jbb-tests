@@ -33,10 +33,10 @@ function run_test( bundle, row, callback ) {
 
 	// Run timing tests for binary
 	var load_binary = function( cb ){
-		console.time("binary["+bundle+"]");
+		console.time("compact["+bundle+"]");
 		binaryLoader.add( 'build/bundles/'+bundle+'.jbb', function() {
 			binaryLoader.load(function() {
-				console.timeEnd("binary["+bundle+"]");
+				console.timeEnd("compact["+bundle+"]");
 				cb();
 			});
 		});
@@ -44,10 +44,10 @@ function run_test( bundle, row, callback ) {
 
 	// Run timing tests for binary
 	var load_sparse_binary = function( cb ){
-		console.time("binary["+bundle+"]");
+		console.time("sparse["+bundle+"]");
 		binaryLoader.add( 'build/bundles/'+bundle+'.jbbp', function() {
 			binaryLoader.load(function() {
-				console.timeEnd("binary["+bundle+"]");
+				console.timeEnd("sparse["+bundle+"]");
 				cb();
 			});
 		});
@@ -113,10 +113,12 @@ $(function() {
 	$("button#start-tests").click(function() {
 
 		// Chain-run all tests
-		run_test("animated", $("#times-animated"), function() {
-			run_test("heavy", $("#times-heavy"), function() {
-				run_test("md2", $("#times-md2"), function() {
+		run_test("vrml", $("#times-vrml"), function() {
+			run_test("animated", $("#times-animated"), function() {
+				run_test("heavy", $("#times-heavy"), function() {
+					run_test("md2", $("#times-md2"), function() {
 
+					});
 				});
 			});
 		});
