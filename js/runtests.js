@@ -61,24 +61,38 @@ function run_test( bundle, row, callback ) {
 	// Run binary first
 	var loadStart = Date.now();
 	load_source(function() {
-		var loadDelta = Date.now() - loadStart;
-		row.find(".v-source").text( loadDelta + " ms");
+		var referenceDelta = Date.now() - loadStart;
+		row.find(".v-source").html( referenceDelta + " ms");
 
 		// Wait a sec
 		setTimeout(function() {
 			// Load source
 			var loadStart = Date.now();
 			load_binary(function() {
-				loadDelta = Date.now() - loadStart;
-				row.find(".v-compact").text( loadDelta + " ms");
+				var loadDelta = Date.now() - loadStart;
+
+				// Calculate delta
+				var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
+				if (percent > 0) {
+					row.find(".v-compact").html( loadDelta + ' ms <span class="text-success">( +'+percent.toFixed(2)+' % )</span>');
+				} else {
+					row.find(".v-compact").html( loadDelta + ' ms <span class="text-danger">( '+percent.toFixed(2)+' % )</span>');
+				}
 
 				// Wait a sec
 				setTimeout(function() {
 					// Load source
 					var loadStart = Date.now();
 					load_sparse_binary(function() {
-						loadDelta = Date.now() - loadStart;
-						row.find(".v-sparse").text( loadDelta + " ms");
+						var loadDelta = Date.now() - loadStart;
+
+						// Calculate delta
+						var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
+						if (percent > 0) {
+							row.find(".v-sparse").html( loadDelta + ' ms <span class="text-success">( +'+percent.toFixed(2)+' % )</span>');
+						} else {
+							row.find(".v-sparse").html( loadDelta + ' ms <span class="text-danger">( '+percent.toFixed(2)+' % )</span>');
+						}
 
 						// Trigger callback
 						callback();
