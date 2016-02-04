@@ -4,14 +4,45 @@
 		<title>JBB Browser Tests</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<script src="build/runtests.min.js"></script> 
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	</head>
 	<body>
-		<h1>JBB Browser Tests</h1>
-		<p>Open your javascript console and run one of the following:</p>
-<pre>
-run_test("animated");
-run_test("heavy");
-run_test("md2");
-</pre>
+		<div class="container">
+			<h1>JBB Browser Tests</h1>
+			<p>Open your javascript console and run one of the following:</p>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Bundle</th>
+						<th class="text-center">Source (.jbbsrc)</th>
+						<th class="text-center">Compact Bundle (.jbb)</th>
+						<th class="text-center">Sparse Bundle (.jbbp)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="times-animated">
+						<th>animated</th>
+						<td class="v-source text-center"> --- </td>
+						<td class="v-compact text-center"> --- </td>
+						<td class="v-sparse text-center"> --- </td>
+					</tr>
+					<tr id="times-heavy">
+						<th>heavy</th>
+						<td class="v-source text-center"> --- </td>
+						<td class="v-compact text-center"> --- </td>
+						<td class="v-sparse text-center"> --- </td>
+					</tr>
+					<tr id="times-md2">
+						<th>md2</th>
+						<td class="v-source text-center"> --- </td>
+						<td class="v-compact text-center"> --- </td>
+						<td class="v-sparse text-center"> --- </td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<button id="start-tests" class="btn btn-default">Start Tests</button>
+			</p>
+		</div>
 	</body>
 </html>
