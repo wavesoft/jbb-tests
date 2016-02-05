@@ -35,9 +35,9 @@
 
 	<body>
 		<div id="info">
-			<a href="http://threejs.org" target="_blank">three.js</a> -
+			<a href="http://github.com/wavesoft/jbb" target="_blank">JBB.js</a> -
 			monster by <a href="http://www.3drt.com/downloads.htm" target="_blank">3drt</a>,
-			loaded with <a href="http://github.com/wavesoft/jbb" target="_blank">JBB</a>
+			example from <a href="http://threejs.org" target="_blank">three.js</a>
 		</div>
 
 		<script src="//threejs.org/build/three.min.js"></script>
@@ -104,10 +104,6 @@
 
 						var x = ( ( i % 27 )  - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
 						var z = ( Math.floor( i / 27 ) - 13.5 ) * 2 + THREE.Math.randFloatSpread( 1 );
-
-						// leave space for big monster
-
-						if ( Math.abs( x ) < 2 && Math.abs( z ) < 2 ) continue;
 
 						mesh = new THREE.Mesh( geometry, faceMaterial );
 
