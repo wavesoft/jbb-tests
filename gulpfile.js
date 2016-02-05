@@ -40,8 +40,8 @@ gulp.task('bundles', ['bundles.compact', 'bundles.sparse']);
 //
 // Compile the sources 
 //
-gulp.task('script', function() {
-	return gulp.src('js/runtests.js')
+gulp.task('script-timing', function() {
+	return gulp.src('js/test-timing.js')
 		.pipe(webpack({
 			module: {
 				loaders: [
@@ -52,16 +52,41 @@ gulp.task('script', function() {
 		    	'fs': 'empty'
 		    },
 		    output: {
-		    	'filename': 'runtests.js'
+		    	'filename': 'test-timing.js'
 		    },
 		    plugins: [
 		    	new webpack.webpack.optimize.DedupePlugin()
 		    ]
 		}))
-		.pipe(uglify("runtests.min.js", { outSourceMap: true }))
+		.pipe(uglify("test-timing.min.js", { outSourceMap: true }))
+		.pipe(gulp.dest('build'));
+});
+
+//
+// Compile the sources 
+//
+gulp.task('script-loader', function() {
+	return gulp.src('js/test-loader.js')
+		.pipe(webpack({
+			module: {
+				loaders: [
+					{ test: /\.json$/, loader: 'json' },
+				],
+		    },
+		    node: {
+		    	'fs': 'empty'
+		    },
+		    output: {
+		    	'filename': 'test-loader.min.js'
+		    },
+		    plugins: [
+		    	new webpack.webpack.optimize.DedupePlugin()
+		    ]
+		}))
+		// .pipe(uglify("test-loader.min.js", { outSourceMap: true }))
 		.pipe(gulp.dest('build'));
 });
 
 // By default run only script
-gulp.task('default', ['script']);
+gulp.task('default', ['script-timing']);
 

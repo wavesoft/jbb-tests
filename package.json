@@ -22,9 +22,13 @@
   "homepage": "https://github.com/wavesoft/jbb-tests#readme",
   "dependencies": {
     "gulp": "^3.9.0",
+    "gulp-jbb": "^0.1.0",
     "gulp-uglifyjs": "^0.6.2",
+    "jbb": "^1.0.0",
+    "jbb-profile-three": "^0.2.0",
     "jquery": "^2.2.0",
     "json-loader": "^0.5.4",
+    "three": "^0.73.2",
     "webpack-stream": "^3.1.0"
   }
 }
