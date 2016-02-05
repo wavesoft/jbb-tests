@@ -34,22 +34,20 @@ function run_test( bundle, row, callback ) {
 	// Run timing tests for binary
 	var load_binary = function( cb ){
 		console.time("compact["+bundle+"]");
-		binaryLoader.add( 'build/bundles/'+bundle+'.jbb', function() {
-			binaryLoader.load(function() {
-				console.timeEnd("compact["+bundle+"]");
-				cb();
-			});
+		binaryLoader.add( 'build/bundles/'+bundle+'.jbb');
+		binaryLoader.load(function() {
+			console.timeEnd("compact["+bundle+"]");
+			cb();
 		});
 	}
 
 	// Run timing tests for binary
 	var load_sparse_binary = function( cb ){
 		console.time("sparse["+bundle+"]");
-		binaryLoader.add( 'build/bundles/'+bundle+'.jbbp', function() {
-			binaryLoader.load(function() {
-				console.timeEnd("sparse["+bundle+"]");
-				cb();
-			});
+		binaryLoader.add( 'build/bundles/'+bundle+'.jbbp');
+		binaryLoader.load(function() {
+			console.timeEnd("compact["+bundle+"]");
+			cb();
 		});
 	}
 
