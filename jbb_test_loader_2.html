@@ -162,31 +162,8 @@
 					bundleLoader.add("md2.jbb");
 				}
 
-				// Get model from bundle
+				// Load bundle
 				bundleLoader.load( function() {
-
-					// CHARACTER
-
-					character = bundleLoader.database['md2/ratamahatta'];
-
-					// character.meshBody.scale.set( 3, 3, 3 );
-					// for (var i=0; i<character.weapons.length; i++) {
-					// 	character.weapons[i].scale.set( 3, 3, 3 );
-					// }
-
-					scene.add( character.root );
-
-					gui.add( playbackConfig, 'speed', 0, 2 ).onChange( function() {
-						character.setPlaybackRate( playbackConfig.speed );
-					} );
-
-					gui.add( playbackConfig, 'wireframe', false ).onChange( function() {
-						character.setWireframe( playbackConfig.wireframe );
-					} );
-
-					setupSkinsGUI( character );
-					setupWeaponsGUI( character );
-					setupGUIAnimations( character );
 
 					//  GROUND
 
@@ -202,7 +179,33 @@
 
 					scene.add( ground );
 
+
+					// CHARACTER
+
+					character = bundleLoader.database['md2/ratamahatta'];
+
+					scene.add( character.root );
+
+					gui.add( playbackConfig, 'speed', 0, 2 ).onChange( function() {
+
+						character.setPlaybackRate( playbackConfig.speed );
+
+					} );
+
+					gui.add( playbackConfig, 'wireframe', false ).onChange( function() {
+
+						character.setWireframe( playbackConfig.wireframe );
+
+					} );
+
+					setupSkinsGUI( character );
+					setupWeaponsGUI( character );
+					setupGUIAnimations( character );
+
+					character.setAnimation( character.meshBody.geometry.animations[0].name )
+
 				});
+
 
 
 			}
@@ -294,19 +297,21 @@
 
 				var folder = gui.addFolder( "Animations" );
 
-				var generateCallback = function( animationName ) {
+				var generateCallback = function( animationClip ) {
 
-					return function () { character.setAnimation( animationName ); };
+					return function () { character.setAnimation( animationClip.name ); };
 
 				};
 
 				var i = 0, guiItems = [];
 				var animations = character.meshBody.geometry.animations;
 
-				for ( var a in animations ) {
+				for ( var i = 0; i < animations.length; i ++ ) {
 
-					playbackConfig[ a ] = generateCallback( a );
-					guiItems[ i ] = folder.add( playbackConfig, a, a );
+					var clip = animations[i];
+
+					playbackConfig[ clip.name ] = generateCallback( clip );
+					guiItems[ i ] = folder.add( playbackConfig, clip.name, clip.name );
 
 					i ++;
 

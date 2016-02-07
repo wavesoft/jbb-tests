@@ -26,10 +26,10 @@ var LOG = {
 // Paths to the bundle files
 //
 var bundles 	= [
-	'bundles/animated.jbbsrc',
-	'bundles/heavy.jbbsrc',
+	// 'bundles/animated.jbbsrc',
+	// 'bundles/heavy.jbbsrc',
 	'bundles/md2.jbbsrc',
-	'bundles/vrml.jbbsrc',
+	// 'bundles/vrml.jbbsrc',
 ];
 
 //
@@ -41,7 +41,7 @@ gulp.task('bundles.compact', function() {
 		.pipe(jbb({
 			profile: 'three',
 			sparse: false,
-			log: LOG.SUMM
+			log: LOG.SUMM | LOG.PDBG
 		}))
 		.pipe(gulp.dest('build/bundles'));
 });
