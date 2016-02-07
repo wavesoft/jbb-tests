@@ -159,7 +159,7 @@
 					bundleLoader.add("md2");
 				} else {
 					bundleLoader = new JBBBinaryLoader( JBBProfileThree, "build/bundles" );
-					bundleLoader.add("md2.jbb");
+					bundleLoader.add("md2.jbbp");
 				}
 
 				// Load bundle
@@ -173,7 +173,7 @@
 
 					var ground = new THREE.Mesh( gg, gm );
 					ground.rotation.x = - Math.PI / 2;
-					ground.material.map.repeat.set( 8, 8 );
+					ground.material.map.repeat = new THREE.Vector2( 8, 8 );
 					ground.material.map.wrapS = ground.material.map.wrapT = THREE.RepeatWrapping;
 					ground.receiveShadow = true;
 

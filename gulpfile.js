@@ -26,10 +26,10 @@ var LOG = {
 // Paths to the bundle files
 //
 var bundles 	= [
-	// 'bundles/animated.jbbsrc',
-	// 'bundles/heavy.jbbsrc',
+	'bundles/animated.jbbsrc',
+	'bundles/heavy.jbbsrc',
 	'bundles/md2.jbbsrc',
-	// 'bundles/vrml.jbbsrc',
+	'bundles/vrml.jbbsrc',
 ];
 
 //
