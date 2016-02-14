@@ -25,7 +25,7 @@ var LOG = {
 //
 // Paths to the bundle files
 //
-var bundles 	= [
+var bundles = [
 	'bundles/animated.jbbsrc',
 	'bundles/heavy.jbbsrc',
 	'bundles/md2.jbbsrc',
@@ -40,8 +40,7 @@ gulp.task('bundles.compact', function() {
 		.src(bundles)
 		.pipe(jbb({
 			profile: 'three',
-			sparse: false,
-			log: LOG.SUMM | LOG.PDBG
+			sparse: false
 		}))
 		.pipe(gulp.dest('build/bundles'));
 });
