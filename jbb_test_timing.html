@@ -95,7 +95,7 @@
 				console.time("sparse["+bundle+"]");
 				binaryLoader.add( bundle+'.jbbp');
 				binaryLoader.load(function() {
-					console.timeEnd("compact["+bundle+"]");
+					console.timeEnd("sparse["+bundle+"]");
 					cb();
 				});
 			}
