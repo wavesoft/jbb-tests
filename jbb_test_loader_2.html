@@ -42,7 +42,7 @@
 
 		<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
 
-		<script src="//threejs.org/examples/js/controls/OrbitControls.js"></script>
+		<script src="https://rawgit.com/mrdoob/three.js/515db92b398ef22cf63845bc8d875d4457f035c5/examples/js/controls/OrbitControls.js"></script>
 
 		<script src='//threejs.org/examples/js/Detector.js'></script>
 		<script src='//threejs.org/examples/js/libs/stats.min.js'></script>
@@ -323,10 +323,9 @@
 
 			function animate() {
 
-				requestAnimationFrame( animate );
 				render();
-
 				stats.update();
+				requestAnimationFrame( animate );
 
 			}
 
