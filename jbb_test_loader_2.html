@@ -155,10 +155,12 @@
 
 				var SOURCE = 0, bundleLoader = null;
 				if (SOURCE) {
-					bundleLoader = new JBBSourceLoader( JBBProfileThreeLoader, "bundles" );
+					bundleLoader = new JBBSourceLoader( "bundles" );
+					bundleLoader.addProfileLoader( JBBProfileThreeLoader );
 					bundleLoader.add("md2");
 				} else {
-					bundleLoader = new JBBBinaryLoader( JBBProfileThree, "build/bundles" );
+					bundleLoader = new JBBBinaryLoader( "build/bundles" );
+					bundleLoader.addProfile( JBBProfileThree );
 					bundleLoader.add("md2.jbbp");
 				}
 

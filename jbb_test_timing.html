@@ -69,7 +69,8 @@
 			var sourceLoader = new JBBSourceLoader( 'bundles' );
 			sourceLoader.addProfileLoader( JBBProfileThreeLoader );
 			// Instantiate a new binary decoder
-			var binaryLoader = new JBBBinaryLoader( JBBProfileThree, 'build/bundles' );
+			var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
+			binaryLoader.addProfile( JBBProfileThree );
 
 			// Run timing tests for source
 			var load_source = function( cb ){

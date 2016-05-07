@@ -79,7 +79,8 @@
 
 				// Add Blender exported Collada model
 
-				var bundleLoader = new JBBBinaryLoader( JBBProfileThree );
+				var bundleLoader = new JBBBinaryLoader();
+				bundleLoader.addProfile( JBBProfileThree );
 
 				// Get model from bundle
 				bundleLoader.add("build/bundles/animated.jbb");
