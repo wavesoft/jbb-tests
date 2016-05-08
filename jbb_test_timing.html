@@ -57,6 +57,7 @@
 		<script src="build/jbb-loader.min.js"></script>
 		<script src="build/jbb-profile-three.min.js"></script>
 		<script src="build/jbb-profile-three-loader.min.js"></script>
+		<script src="js/loadhook.js"></script>
 
 		<script>
 
@@ -65,6 +66,11 @@
 		 */
 		var REPEAT_TIMES = 12;
 		var DROP_BIGGEST = 2;
+
+		/**
+		 * Initialize a loadhook
+		 */
+		var loadHook = new LoadHook();
 
 		/**
 		 * Repeat function call multiple times
@@ -85,7 +91,7 @@
 			};
 			var cont = function( avgNum ) {
 				values.push(avgNum);
-				if (counter === total) {
+				if (counter >= total) {
 
 					// Sort by value
 					values.sort(function(a, b){return a-b});
@@ -119,6 +125,16 @@
 
 					label.html( (i+1)+' / '+total );
 					var loadStart = Date.now();
+					var loadTime = 0, parseTime = 0;
+
+					// Initialize loadhook
+					loadHook.start(function(time) {
+						loadTime = time;
+						if ((loadTime !== 0) && (parseTime !== 0)) {
+							cb( Math.max(loadTime, parseTime) );
+							console.debug("breakdown["+bundle+"]( load=",loadTime,", parse=",parseTime,")");
+						}
+					});
 
 					// Instantiate a new bundles loader
 					var sourceLoader = new JBBSourceLoader( 'bundles' );
@@ -129,7 +145,11 @@
 					sourceLoader.add( bundle+"?"+uuid );
 					sourceLoader.load(function() {
 						console.timeEnd("source["+bundle+"]");
-						cb( Date.now() - loadStart );
+						parseTime = Date.now() - loadStart;
+						if ((loadTime !== 0) && (parseTime !== 0)) {
+							cb( Math.max(loadTime, parseTime) );
+							console.debug("breakdown["+bundle+"]( load=",loadTime,", parse=",parseTime,")");
+						}
 					});
 
 				}, cb);
