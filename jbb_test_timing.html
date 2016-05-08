@@ -61,10 +61,16 @@
 		<script>
 
 		/**
+		 * Configuration
+		 */
+		var REPEAT_TIMES = 12;
+		var DROP_BIGGEST = 2;
+
+		/**
 		 * Repeat function call multiple times
 		 */
-		function run_repeat( times, fn, callback ) {
-			var counter=0, total=times, values = 0;
+		function run_repeat( times, drop, fn, callback ) {
+			var counter=0, total=times, values = [];
 			var callfn = function() {
 				// Create unique ID
 				var uuid = "";
@@ -78,9 +84,22 @@
 				}, 1000);
 			};
 			var cont = function( avgNum ) {
-				values += avgNum;
+				values.push(avgNum);
 				if (counter === total) {
-					callback( values / total );
+
+					// Sort by value
+					values.sort(function(a, b){return a-b});
+
+					// Drop biggest
+					console.log("Dropping", values.splice( values.length-drop, drop ));
+
+					// Calculate average
+					var sum = 0;
+					for (var i=0; i<values.length; i++)
+						sum += values[i];
+
+					callback( sum / values.length );
+
 				} else {
 					callfn()
 				}
@@ -96,7 +115,7 @@
 
 			// Run timing tests for source
 			var load_source = function( label, cb ){
-				run_repeat( 10, function( i, total, uuid, cb ) {
+				run_repeat( REPEAT_TIMES, DROP_BIGGEST, function( i, total, uuid, cb ) {
 
 					label.html( (i+1)+' / '+total );
 					var loadStart = Date.now();
@@ -118,7 +137,7 @@
 
 			// Run timing tests for binary
 			var load_binary = function( label, cb ){
-				run_repeat( 10, function( i, total, uuid, cb ) {
+				run_repeat( REPEAT_TIMES, DROP_BIGGEST, function( i, total, uuid, cb ) {
 
 					label.html( (i+1)+' / '+total );
 					var loadStart = Date.now();
@@ -140,7 +159,7 @@
 
 			// Run timing tests for binary
 			var load_sparse_binary = function( label, cb ){
-				run_repeat( 10, function( i, total, uuid, cb ) {
+				run_repeat( REPEAT_TIMES, DROP_BIGGEST, function( i, total, uuid, cb ) {
 
 					label.html( (i+1)+' / '+total );
 					var loadStart = Date.now();
