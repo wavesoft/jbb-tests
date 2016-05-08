@@ -1,6 +1,17 @@
 (function(window, document) {
 
 /**
+ * Return new UUID
+ */
+function new_uuid() {
+	var uuid = "";
+	for (var i=0; i<24; i++) {
+		uuid += String.fromCharCode( 97 + Math.floor(Math.random() * 25) );
+	}
+	return uuid;
+}
+
+/**
  * Utility class that hooks into all possible loading actions
  * and tracks the overall loading time.
  */
@@ -8,6 +19,7 @@ var LoadHook = function() {
 
 	// Initialize properties
 	this.active = false;
+	this.invalidateCache = false;
 	this.callback = null;
 
 	this.queued = 0;
@@ -21,15 +33,27 @@ var LoadHook = function() {
 
 	// Override createElement function
 	this.oldCreateElement = document.createElement;
+	document.createElement = this.__handleCreateElement.bind(this);
 
     // Override the native XMLHttpRequest send()
     var scope = this;
     this.oldXHRSend = XMLHttpRequest.prototype.send;
+    this.oldXHROpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.send = function(){
         // Handle request
         scope.__handleXHRSend( this );
         // call the native send()
         scope.oldXHRSend.apply(this, arguments);
+    }
+    XMLHttpRequest.prototype.open = function(verb, url){
+    	if (scope.invalidateCache) {
+    		if (url.indexOf('?') == -1) {
+    			arguments[1] = url + "?_=" + new_uuid();
+    		} else {
+    			arguments[1] = url + "&_=" + new_uuid();
+    		}
+    	}
+        scope.oldXHROpen.apply(this, arguments);
     }
 
 };
@@ -56,7 +80,7 @@ LoadHook.prototype.__handleXHRSend = function( xhr ) {
  * Local function to handle 'createElement' requests
  */
 LoadHook.prototype.__handleCreateElement = function( tag ) {
-	var elm = this.oldCreateElement( tag );
+	var elm = this.oldCreateElement.call(document, tag);
 	if (!this.active) return elm;
 	if (tag !== "img") return elm;
 
@@ -69,6 +93,26 @@ LoadHook.prototype.__handleCreateElement = function( tag ) {
 	elm.addEventListener( 'error', function ( event ) {
 		scope.__markComplete( true );
 	});
+
+	// Override 'src' setter if we need to invalidate cache
+	if (this.invalidateCache) {
+		Object.defineProperty( elm, 'src', {
+			enumerable: true,
+			configurable: true,
+			get: function(){
+			    return this.getAttribute('src')
+			},
+			set: function(newval){
+				if (newval.indexOf('?') == -1) {
+					newval += "?_=" + new_uuid();
+				} else {
+					newval += "&_=" + new_uuid();
+				}
+				console.log("set->",newval);
+			    this.setAttribute('src',newval);
+			}
+		})
+	}
 
 	return elm;
 }
@@ -101,7 +145,7 @@ LoadHook.prototype.__checkCompleted = function() {
 	if (this.completed === this.queued) {
 		if (this.callback)
 			this.callback( this.lastEvent - this.firstEvent );
-		this.active = false;
+		this.stop();
 	}
 }
 
@@ -110,6 +154,7 @@ LoadHook.prototype.__checkCompleted = function() {
  */
 LoadHook.prototype.stop = function() {
 	this.active = false;
+	this.invalidateCache = false;
 };
 
 /**
@@ -117,6 +162,7 @@ LoadHook.prototype.stop = function() {
  */
 LoadHook.prototype.start = function( callback ) {
 	this.active = true;
+	this.invalidateCache = true;
 	this.callback = callback;
 
 	// Reset properties

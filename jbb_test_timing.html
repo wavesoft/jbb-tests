@@ -9,7 +9,7 @@
 		<div class="container">
 			<h1>JBB Browser Tests</h1>
 			<p>Click on the <em>Start Tests</em> button below to download a couple of bundles created using the <code><a href="https://github.com/wavesoft/jbb" target="_blank">jbb</a></code> compiler and the <code><a href="https://github.com/wavesoft/jbb-profile-three" target="_blank">jbb-profile-three</a></code>. You can also click on the bundle name to browse it's contents.</p>
-			<p><em>NOTE:</em> It's important to note that the source bundle will be considered 'loaded' even if some resources are still loading (such as images). JBB on the other hand will be considered 'loaded' only when everything is loaded.</p>
+			<p><em>NOTE:</em> The average is calculated by discarding the 2 worst numbers out of 12 samples.</p>
 			<table class="table">
 				<thead>
 					<tr>
@@ -142,7 +142,7 @@
 
 					// Start loading the source bundle
 					console.time("source["+bundle+"]");
-					sourceLoader.add( bundle+"?"+uuid );
+					sourceLoader.add( bundle );
 					sourceLoader.load(function() {
 						console.timeEnd("source["+bundle+"]");
 						parseTime = Date.now() - loadStart;
@@ -167,7 +167,7 @@
 					binaryLoader.addProfile( JBBProfileThree );
 
 					console.time("compact["+bundle+"]");
-					binaryLoader.add( bundle+'.jbb?'+uuid );
+					binaryLoader.add( bundle+'.jbb?_='+uuid );
 					binaryLoader.load(function() {
 						console.timeEnd("compact["+bundle+"]");
 						cb( Date.now() - loadStart );
@@ -189,7 +189,7 @@
 					binaryLoader.addProfile( JBBProfileThree );
 
 					console.time("sparse["+bundle+"]");
-					binaryLoader.add( bundle+'.jbbp?'+uuid );
+					binaryLoader.add( bundle+'.jbbp?_='+uuid );
 					binaryLoader.load(function() {
 						console.timeEnd("sparse["+bundle+"]");
 						cb( Date.now() - loadStart );
@@ -215,9 +215,9 @@
 						// Calculate delta
 						var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
 						if (percent > 0) {
-							row.find(".v-compact").html( loadDelta + ' ms <span class="text-success">( +'+percent.toFixed(2)+' % )</span>');
+							row.find(".v-compact").html( loadDelta + ' ms <span class="text-success">( -'+percent.toFixed(2)+' % )</span>');
 						} else {
-							row.find(".v-compact").html( loadDelta + ' ms <span class="text-danger">( '+percent.toFixed(2)+' % )</span>');
+							row.find(".v-compact").html( loadDelta + ' ms <span class="text-danger">( +'+(-percent.toFixed(2))+' % )</span>');
 						}
 
 						// Wait a sec
@@ -228,9 +228,9 @@
 								// Calculate delta
 								var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
 								if (percent > 0) {
-									row.find(".v-sparse").html( loadDelta + ' ms <span class="text-success">( +'+percent.toFixed(2)+' % )</span>');
+									row.find(".v-sparse").html( loadDelta + ' ms <span class="text-success">( -'+percent.toFixed(2)+' % )</span>');
 								} else {
-									row.find(".v-sparse").html( loadDelta + ' ms <span class="text-danger">( '+percent.toFixed(2)+' % )</span>');
+									row.find(".v-sparse").html( loadDelta + ' ms <span class="text-danger">( +'+(-percent.toFixed(2))+' % )</span>');
 								}
 
 								// Trigger callback after a sec
