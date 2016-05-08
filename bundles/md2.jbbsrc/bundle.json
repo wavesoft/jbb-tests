@@ -4,10 +4,10 @@
 		"THREE.MD2CharacterLoader": {
 			"ratamahatta": {
 				"baseUrl": "${BUNDLE}/ratamahatta/",
-				"body": "ratamahatta.md2",
-				"skins": [ "ratamahatta.png", "ctf_b.png", "ctf_r.png", "dead.png", "gearwhore.png" ],
-				"weapons":  [  [ "weapon.md2", "weapon.png" ]
-						]
+				"body": "ratamahatta.md2${SUFFIX}",
+				"skins": [ "ratamahatta.png${SUFFIX}", "ctf_b.png${SUFFIX}", "ctf_r.png${SUFFIX}", "dead.png${SUFFIX}", "gearwhore.png${SUFFIX}" ],
+				"weapons":  [  [ "weapon.md2${SUFFIX}", "weapon.png${SUFFIX}" ]
+				]
 			}
 		},
 		"THREE.TextureLoader": {

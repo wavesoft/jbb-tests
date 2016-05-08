@@ -61,45 +61,102 @@
 		<script>
 
 		/**
+		 * Repeat function call multiple times
+		 */
+		function run_repeat( times, fn, callback ) {
+			var counter=0, total=times, values = 0;
+			var callfn = function() {
+				// Create unique ID
+				var uuid = "";
+				for (var i=0; i<24; i++) {
+					uuid += String.fromCharCode( 97 + Math.floor(Math.random() * 25) );
+				}
+
+				// Add a small delay before calling
+				setTimeout(function() {
+					fn( counter++, total, uuid, cont );
+				}, 1000);
+			};
+			var cont = function( avgNum ) {
+				values += avgNum;
+				if (counter === total) {
+					callback( values / total );
+				} else {
+					callfn()
+				}
+			};
+			// Place first call
+			callfn();
+		}
+
+		/**
 		 * Run test by trying to load the source and the binary
 		 */
 		function run_test( bundle, row, callback ) {
 
-			// Instantiate a new bundles loader
-			var sourceLoader = new JBBSourceLoader( 'bundles' );
-			sourceLoader.addProfileLoader( JBBProfileThreeLoader );
-			// Instantiate a new binary decoder
-			var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
-			binaryLoader.addProfile( JBBProfileThree );
-
 			// Run timing tests for source
-			var load_source = function( cb ){
-				console.time("source["+bundle+"]");
-				sourceLoader.add( bundle );
-				sourceLoader.load(function() {
-					console.timeEnd("source["+bundle+"]");
-					cb();
-				});
+			var load_source = function( label, cb ){
+				run_repeat( 10, function( i, total, uuid, cb ) {
+
+					label.html( (i+1)+' / '+total );
+					var loadStart = Date.now();
+
+					// Instantiate a new bundles loader
+					var sourceLoader = new JBBSourceLoader( 'bundles' );
+					sourceLoader.addProfileLoader( JBBProfileThreeLoader );
+
+					// Start loading the source bundle
+					console.time("source["+bundle+"]");
+					sourceLoader.add( bundle+"?"+uuid );
+					sourceLoader.load(function() {
+						console.timeEnd("source["+bundle+"]");
+						cb( Date.now() - loadStart );
+					});
+
+				}, cb);
 			};
 
 			// Run timing tests for binary
-			var load_binary = function( cb ){
-				console.time("compact["+bundle+"]");
-				binaryLoader.add( bundle+'.jbb');
-				binaryLoader.load(function() {
-					console.timeEnd("compact["+bundle+"]");
-					cb();
-				});
+			var load_binary = function( label, cb ){
+				run_repeat( 10, function( i, total, uuid, cb ) {
+
+					label.html( (i+1)+' / '+total );
+					var loadStart = Date.now();
+
+					// Instantiate a new binary decoder
+					var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
+					binaryLoader.addProfile( JBBProfileThree );
+
+					console.time("compact["+bundle+"]");
+					binaryLoader.add( bundle+'.jbb?'+uuid );
+					binaryLoader.load(function() {
+						console.timeEnd("compact["+bundle+"]");
+						cb( Date.now() - loadStart );
+					});
+
+
+				}, cb);
 			}
 
 			// Run timing tests for binary
-			var load_sparse_binary = function( cb ){
-				console.time("sparse["+bundle+"]");
-				binaryLoader.add( bundle+'.jbbp');
-				binaryLoader.load(function() {
-					console.timeEnd("sparse["+bundle+"]");
-					cb();
-				});
+			var load_sparse_binary = function( label, cb ){
+				run_repeat( 10, function( i, total, uuid, cb ) {
+
+					label.html( (i+1)+' / '+total );
+					var loadStart = Date.now();
+
+					// Instantiate a new binary decoder
+					var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
+					binaryLoader.addProfile( JBBProfileThree );
+
+					console.time("sparse["+bundle+"]");
+					binaryLoader.add( bundle+'.jbbp?'+uuid );
+					binaryLoader.load(function() {
+						console.timeEnd("sparse["+bundle+"]");
+						cb( Date.now() - loadStart );
+					});
+
+				}, cb);
 			}
 
 			// Reset rows
@@ -108,17 +165,13 @@
 			row.find(".v-sparse").text("Running...");
 
 			// Run binary first
-			var loadStart = Date.now();
-			load_source(function() {
-				var referenceDelta = Date.now() - loadStart;
+			load_source(row.find(".v-source"), function( referenceDelta ) {
 				row.find(".v-source").html( referenceDelta + " ms");
 
 				// Wait a sec
 				setTimeout(function() {
 					// Load source
-					var loadStart = Date.now();
-					load_binary(function() {
-						var loadDelta = Date.now() - loadStart;
+					load_binary(row.find(".v-compact"), function(loadDelta) {
 
 						// Calculate delta
 						var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
@@ -131,9 +184,7 @@
 						// Wait a sec
 						setTimeout(function() {
 							// Load source
-							var loadStart = Date.now();
-							load_sparse_binary(function() {
-								var loadDelta = Date.now() - loadStart;
+							load_sparse_binary(row.find(".v-sparse"), function(loadDelta) {
 
 								// Calculate delta
 								var percent = ((referenceDelta - loadDelta) / referenceDelta) * 100;
