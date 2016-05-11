@@ -20,6 +20,12 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr id="times-obj">
+						<th><a href="https://github.com/wavesoft/jbb-tests/tree/master/bundles/obj.jbbsrc" target="_blank">obj <span class="glyphicon glyphicon-new-window"></span></a></th>
+						<td class="v-source text-center"> --- </td>
+						<td class="v-compact text-center"> --- </td>
+						<td class="v-sparse text-center"> --- </td>
+					</tr>
 					<tr id="times-vrml">
 						<th><a href="https://github.com/wavesoft/jbb-tests/tree/master/bundles/vrml.jbbsrc" target="_blank">vrml <span class="glyphicon glyphicon-new-window"></span></a></th>
 						<td class="v-source text-center"> --- </td>
@@ -252,11 +258,13 @@
 			$("button#start-tests").click(function() {
 
 				// Chain-run all tests
-				run_test("vrml", $("#times-vrml"), function() {
-					run_test("animated", $("#times-animated"), function() {
-						run_test("heavy", $("#times-heavy"), function() {
-							run_test("md2", $("#times-md2"), function() {
+				run_test("obj", $("#times-obj"), function() {
+					run_test("vrml", $("#times-vrml"), function() {
+						run_test("animated", $("#times-animated"), function() {
+							run_test("heavy", $("#times-heavy"), function() {
+								run_test("md2", $("#times-md2"), function() {
 
+								});
 							});
 						});
 					});

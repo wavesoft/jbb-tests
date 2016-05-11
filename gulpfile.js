@@ -26,6 +26,7 @@ var LOG = {
 // Paths to the bundle files
 //
 var bundles = [
+	'bundles/obj.jbbsrc',
 	'bundles/animated.jbbsrc',
 	'bundles/heavy.jbbsrc',
 	'bundles/md2.jbbsrc',
