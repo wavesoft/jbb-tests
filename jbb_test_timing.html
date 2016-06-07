@@ -143,8 +143,8 @@
 					});
 
 					// Instantiate a new bundles loader
-					var sourceLoader = new JBBSourceLoader( 'bundles' );
-					sourceLoader.addProfileLoader( JBBProfileThreeLoader );
+					var sourceLoader = new JBB.SourceLoader( 'bundles' );
+					sourceLoader.addProfileLoader( JBB.Loader.three );
 
 					// Start loading the source bundle
 					console.time("source["+bundle+"]");
@@ -169,8 +169,8 @@
 					var loadStart = Date.now();
 
 					// Instantiate a new binary decoder
-					var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
-					binaryLoader.addProfile( JBBProfileThree );
+					var binaryLoader = new JBB.BinaryLoader( 'build/bundles' );
+					binaryLoader.addProfile( JBB.Profile.three );
 
 					console.time("compact["+bundle+"]");
 					binaryLoader.add( bundle+'.jbb?_='+uuid );
@@ -191,8 +191,8 @@
 					var loadStart = Date.now();
 
 					// Instantiate a new binary decoder
-					var binaryLoader = new JBBBinaryLoader( 'build/bundles' );
-					binaryLoader.addProfile( JBBProfileThree );
+					var binaryLoader = new JBB.BinaryLoader( 'build/bundles' );
+					binaryLoader.addProfile( JBB.Profile.three );
 
 					console.time("sparse["+bundle+"]");
 					binaryLoader.add( bundle+'.jbbp?_='+uuid );
